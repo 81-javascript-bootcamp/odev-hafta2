@@ -4,18 +4,17 @@
 
 **/
 
-var car = { 
-    registrationNumber: "GA12345",
-    brand: "Toyota",
+var car = {
+  registrationNumber: 'GA12345',
+  brand: 'Toyota',
 
-    displayDetails: function(){
-        console.log(this.registrationNumber + " " + this.brand);
-    }
-}
+  displayDetails: function () {
+    console.log(this.registrationNumber + ' ' + this.brand);
+  },
+};
 
-var myCarDetails =  car.displayDetails;
+var myCarDetails = car.displayDetails.bind(car); // apply, call ya da arrow function da kullanılabilirdi. This keywordünün car objesini göstermesi gerekmekte
 myCarDetails();
-
 
 /** 
 
@@ -28,10 +27,20 @@ bosluk icerebilir, ancak bosluk haridcindeki isimler en az 2 karakterden olusmal
 **/
 
 function isValidName(name) {
-  /// your code here
+  if (typeof name !== 'string' || name === '') return false;
+  name = name.replace(/\s+/g, ' ').trim(); // Bununla kelime arasında bulunan birden fazla boşlukları temizliyorum. Ayrıca cumle basında ve sonunda olabilecek boşlukları da temizliyorum
+
+  return name.split(' ').every((word) => word.length > 1); //Bununla boşluklara bölüp her kelimenin en az 2 karakterli oldugunu kontrol ediyorum.
 }
 
-
+/* Test Cases */
+// console.log(isValidName('')); //Fail
+// console.log(isValidName(6)); //Fail
+// console.log(isValidName('2 ')); //Fail
+// console.log(isValidName('o   ozkercin')); //Fail
+// console.log(isValidName('    orhan ozkercin')); //Pass
+// console.log(isValidName('orhan    ozkercin')); //Pass
+// console.log(isValidName('or oz')); //Pass
 
 /**
 
@@ -43,14 +52,10 @@ function isValidName(name) {
 const book = {
   title: 'Brave New World',
   author: 'Aldous Huxley',
-}
+};
 
 function summary(genre, year) {
-  console.log(
-    `${this.title} was written by ${this.author}. It is a ${genre} novel written in ${year}.`,
-  )
+  console.log(`${this.title} was written by ${this.author}. It is a ${genre} novel written in ${year}.`);
 }
 
-
-
-
+summary.call(book); // Birinci örnekteki gibi this keywordü booku göstermeli, apply, bind da kullanılabilirdi.
